@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A1123382 PHP 夏令營報名系統</title>
+    <style>
+        :root {
+            --bg-color: #f3e9dc;       /* 極淺奶茶底色 */
+            --container-bg: #ffffff;   /* 純白容器背景 */
+            --main-text: #5d4037;      /* 深可可色文字 */
+            --sub-text: #8d6e63;       /* 淺褐文字 */
+            --accent-color: #c6a49a;   /* 玫瑰奶茶強調色 */
+            --border-color: #e0d5c1;   /* 邊框色 */
+            --input-focus: #d7ccc8;    /* 輸入框聚焦顏色 */
+        }
+
+        body {
+            font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+            background-color: var(--bg-color);
+            color: var(--main-text);
+            line-height: 1.8;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* 居中 */
+        }
+
+        /* 主容器 */
+        .main-container {
+            background-color: var(--container-bg);
+            width: 100%;
+            max-width: 600px; /* 限制最大寬度 */
+            padding: 40px;
+            border-radius: 20px; /* 圓角 */
+            box-shadow: 0 10px 25px rgba(93, 64, 55, 0.1); /* 柔和陰影 */
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--main-text);
+            font-size: 2.2em;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--sub-text);
+            margin-bottom: 40px;
+            font-size: 1.1em;
+        }
+
+        /* 表單區域排版 */
+        .form-section {
+            margin-bottom: 25px;
+        }
+
+        /* 標籤樣式 */
+        label.section-title {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: var(--main-text);
+            font-size: 1.05em;
+        }
+
+        /* 文字輸入框共同樣式 (text, email, password, date, select, textarea) */
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="date"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: #fff;
+            color: var(--main-text);
+            font-size: 1em;
+            box-sizing: border-box; /* 確保 padding 不影響寬度 */
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(198, 164, 154, 0.3); /* 聚焦時的柔光 */
+        }
+
+        /* 單選與多選框的排版 */
+        .option-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            padding-top: 5px;
+        }
+
+        .option-item {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            color: var(--sub-text);
+        }
+
+        .option-item input {
+            margin-right: 8px;
+            accent-color: var(--accent-color); /* 改變 checkbox/radio 的顏色 */
+            width: 18px;
+            height: 18px;
+        }
+
+        /* 顏色選擇器特殊樣式 */
+        input[type="color"] {
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            background: none;
+            padding: 0;
+        }
+
+        /* 按鈕區域 */
+        .button-group {
+            text-align: center;
+            margin-top: 40px;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        /* 按鈕共同樣式 */
+        input[type="submit"],
+        input[type="reset"] {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+            font-weight: bold;
+        }
+
+        /* 提交按鈕 (玫瑰奶茶色) */
+        input[type="submit"] {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #b89388;
+        }
+
+        /* 重置按鈕 (淺灰色) */
+        input[type="reset"] {
+            background-color: #e0e0e0;
+            color: #757575;
+        }
+
+        input[type="reset"]:hover {
+            background-color: #d5d5d5;
+        }
+
+        input:active {
+            transform: scale(0.98); /* 點擊時縮小效果 */
+        }
+
+        hr {
+            border: 0;
+            border-top: 1px solid var(--border-color);
+            margin: 40px 0;
+            width: 100%;
+        }
+
+        /* --- PHP 結果顯示區域樣式 --- */
+        .result-box {
+            background-color: #fdfaf5; /* 更淺的米色 */
+            border: 1px solid var(--accent-color);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 30px;
+            width: 100%;
+            max-width: 600px;
+            box-sizing: border-box;
+        }
+
+        .result-box h2 {
+            color: var(--accent-color);
+            margin-top: 0;
+            text-align: center;
+        }
+
+        .result-item {
+            margin-bottom: 15px;
+            border-bottom: 1px dashed var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .result-label {
+            font-weight: bold;
+            color: var(--main-text);
+            margin-right: 10px;
+            display: inline-block;
+            width: 120px; /* 對齊標籤 */
+        }
+
+        .result-content {
+            color: var(--sub-text);
+        }
+
+        .debug-info {
+            font-size: 0.85em;
+            background-color: #eee;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 20px;
+            color: #666;
+            overflow-x: auto;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <h1>夏令營報名</h1>
+        <p class="subtitle">歡迎填寫以下資料，開啟精彩暑假！</p>
+        
+        <form action="" method="post">
+            <div class="form-section">
+                <label class="section-title">姓名</label>
+                <input type="text" name="username" placeholder="請輸入中文或英文姓名" required>
+            </div>
+            
+            <div class="form-section">
+                <label class="section-title">電子信箱</label>
+                <input type="email" name="email" placeholder="example@gmail.com" required>
+            </div>
+            
+            <div class="form-section">
+                <label class="section-title">Password</label>
+                <input type="password" name="userpass" placeholder="至少 8 個字元">
+            </div>
+
+            <div class="form-section">
+                <label class="section-title">Birthday</label>
+                <input type="date" name="birthday">
+            </div>
+
+            <div class="form-section">
+                <label class="section-title">性別</label>
+                <div class="option-group">
+                    <label class="option-item"><input type="radio" name="gender" value="男">男</label>
+                    <label class="option-item"><input type="radio" name="gender" value="女">女</label>
+                    <label class="option-item"><input type="radio" name="gender" value="其他">其他</label>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <label class="section-title">希望報名的梯次</label>
+                <select name="session">
+                    <option value="" disabled selected>請選擇梯次</option>
+                    <option value="第一梯次 (7/01-7/05)">第一梯次 (7/01-7/05)</option>
+                    <option value="第二梯次 (7/08-7/12)">第二梯次 (7/08-7/12)</option>
+                    <option value="第三梯次 (7/15-7/19)">第三梯次 (7/15-7/19)</option>
+                </select>
+            </div>
+
+            <div class="form-section">
+                <label class="section-title">感興趣的課程 (可多選)</label>
+                <div class="option-group">
+                    <label class="option-item"><input type="checkbox" name="interests[]" value="程式設計">程式設計</label>
+                    <label class="option-item"><input type="checkbox" name="interests[]" value="機器人組裝">機器人組裝</label>
+                    <label class="option-item"><input type="checkbox" name="interests[]" value="戶外探索">戶外探索</label>
+                    <label class="option-item"><input type="checkbox" name="interests[]" value="英文會話">英文會話</label>
+                    <label class="option-item"><input type="checkbox" name="interests[]" value="創意美術">創意美術</label>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <label class="section-title">營隊 T-shirt 顏色首選</label>
+                <input type="color" name="tshirt_color" value="#c6a49a"> </div>
+
+            <div class="form-section">
+                <label class="section-title">特殊要求或備註</label>
+                <textarea name="comment" rows="5" placeholder="例如：飲食禁忌(素食/過敏)、特殊病史，或希望與誰同房..."></textarea>
+            </div>
+
+            <div class="button-group">
+                <input type="reset" value="重新填寫">
+                <input type="submit" value="提交報名表">
+            </div>
+        </form>
+    </div> <?php
+    // 檢查是否有資料透過 POST 送出
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        echo "<div class='result-box'>";
+        echo "<h2>✅ 報名資料確認</h2>";
+
+        // 定義一個方便顯示的函數
+        function printResult($label, $content, $isColor = false) {
+            echo "<div class='result-item'>";
+            echo "<span class='result-label'>$label</span>";
+            if ($isColor) {
+                echo "<span class='result-content' style='display:inline-block; width:20px; height:20px; background-color:$content; border-radius:50%; vertical-align:middle; border:1px solid #ccc;'></span> <span class='result-content'>$content</span>";
+            } else {
+                echo "<span class='result-content'>$content</span>";
+            }
+            echo "</div>";
+        }
+
+        // 取得並清理資料
+        $name = htmlspecialchars($_POST['username']);
+        $email = htmlspecialchars($_POST['email']);
+        $birthday = $_POST['birthday'] ? $_POST['birthday'] : "未填寫";
+        $gender = isset($_POST['gender']) ? $_POST['gender'] : "未填寫";
+        $session = isset($_POST['session']) ? $_POST['session'] : "未選擇";
+        // 處理多選題
+        $interests_str = "未勾選";
+        if (isset($_POST['interests'])) {
+            $interests_str = implode("、", $_POST['interests']);
+        }
+        $tcolor = $_POST['tshirt_color'];
+        $comment = nl2br(htmlspecialchars($_POST['comment']));
+        $comment_display = $comment ? $comment : "無特別備註";
+
+        // 顯示結果
+        printResult("姓名", $name);
+        printResult("電子信箱", $email);
+        printResult("出生日期", $birthday);
+        printResult("性別", $gender);
+        printResult("選擇梯次", $session);
+        printResult("感興趣課程", $interests_str);
+        printResult("T-shirt 顏色", $tcolor, true);
+        printResult("備註內容", "<br>" . $comment_display);
+        
+        // 偵錯資訊
+        echo "<div class='debug-info'>";
+        echo "<strong>(Debug) POST 原始資料：</strong><pre>";
+        print_r($_POST);
+        echo "</pre></div>";
+
+        echo "</div>"; // end .result-box
+    }
+    ?>
+</body>
+</html>
