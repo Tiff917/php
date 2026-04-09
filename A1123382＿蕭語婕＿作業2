@@ -1,0 +1,47 @@
+<?php
+session_start();
+
+$error = "";
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $user = $_POST['account'];
+    $pass = $_POST['password'];
+
+    // 簡單驗證邏輯
+    if ($user === "admin" && $pass === "1234") {
+        $_SESSION['loggedin'] = true;
+        header("Location: 0321.php"); // 登入成功，跳轉到報名表
+        exit;
+    } else {
+        $error = "帳號或密碼錯誤，請重新輸入！";
+    }
+}
+?>
+
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>登入 - 夏令營報名系統</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* 延續你原本的奶茶色調風格 */
+        :root { --bg-color: #f3e9dc; --container-bg: #ffffff; --accent-color: #c6a49a; --main-text: #5d4037; }
+        body { font-family: 'Poppins', sans-serif; background-color: var(--bg-color); display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .login-container { background: var(--container-bg); padding: 40px; border-radius: 24px; box-shadow: 0 15px 35px rgba(0,0,0,0.05); width: 350px; text-align: center; }
+        input[type="text"], input[type="password"] { width: 100%; padding: 12px; margin: 10px 0; border: 1.5px solid #e0d5c1; border-radius: 12px; box-sizing: border-box; }
+        input[type="submit"] { width: 100%; padding: 12px; background: var(--accent-color); border: none; color: white; border-radius: 12px; cursor: pointer; font-weight: 600; }
+        .error-msg { color: #d32f2f; font-size: 0.85rem; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>登入系統</h2>
+        <?php if($error) echo "<p class='error-msg'>$error</p>"; ?>
+        <form method="post" action="">
+            <input type="text" name="account" placeholder="帳號 (admin)" required>
+            <input type="password" name="password" placeholder="密碼 (1234)" required>
+            <input type="submit" value="登入">
+        </form>
+    </div>
+</body>
+</html>
