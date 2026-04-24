@@ -1,17 +1,33 @@
 <?php
+// 【關鍵 1：啟動會話】這必須放在檔案的最頂端，連一個空格都不能有
+// 它的作用是讓伺服器記住這個使用者的狀態（例如：他已經登入過了）
 session_start();
 
-$error = "";
+$error = ""; // 預設錯誤訊息為空
+
+// 檢查是否為 POST 請求（代表使用者點擊了登入按鈕）
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // 接收表單傳來的帳號與密碼
     $user = $_POST['account'];
     $pass = $_POST['password'];
 
-    // 簡單驗證邏輯
+    // 【簡單驗證邏輯】這是練習用的寫法，直接把帳密寫死在程式裡
     if ($user === "admin" && $pass === "1234") {
+        
+        // 【關鍵 2：設定登入標記】
+        // 將 Session 陣列中的 'loggedin' 設為 true
+        // 這樣在其他頁面（如 0321.php）只要檢查這個變數，就知道使用者有沒有登入
         $_SESSION['loggedin'] = true;
-        header("Location: 0321.php"); // 登入成功，跳轉到報名表
+        
+        // 【關鍵 3：頁面跳轉】
+        // header("Location: ...") 會叫瀏覽器直接飛往另一個頁面
+        header("Location: 0321.php"); 
+        
+        // 跳轉後務必加上 exit，確保後面的程式碼不會被執行，節省資源也更安全
         exit;
+        
     } else {
+        // 如果帳密不符，將錯誤訊息存入變數，等一下顯示在畫面上
         $error = "帳號或密碼錯誤，請重新輸入！";
     }
 }
@@ -24,23 +40,86 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>登入 - 夏令營報名系統</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        /* 延續你原本的奶茶色調風格 */
-        :root { --bg-color: #f3e9dc; --container-bg: #ffffff; --accent-color: #c6a49a; --main-text: #5d4037; }
-        body { font-family: 'Poppins', sans-serif; background-color: var(--bg-color); display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .login-container { background: var(--container-bg); padding: 40px; border-radius: 24px; box-shadow: 0 15px 35px rgba(0,0,0,0.05); width: 350px; text-align: center; }
-        input[type="text"], input[type="password"] { width: 100%; padding: 12px; margin: 10px 0; border: 1.5px solid #e0d5c1; border-radius: 12px; box-sizing: border-box; }
-        input[type="submit"] { width: 100%; padding: 12px; background: var(--accent-color); border: none; color: white; border-radius: 12px; cursor: pointer; font-weight: 600; }
-        .error-msg { color: #d32f2f; font-size: 0.85rem; margin-bottom: 10px; }
+        /* 【設計規範：奶茶色調】延續你原本美美的風格 */
+        :root { 
+            --bg-color: #f3e9dc;       /* 背景色 */
+            --container-bg: #ffffff;   /* 容器白色 */
+            --accent-color: #c6a49a;   /* 強調色（玫瑰奶茶） */
+            --main-text: #5d4037;      /* 主文字色（深可可） */
+        }
+
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background-color: var(--bg-color); 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; /* 讓內容垂直水平絕對置中 */
+            margin: 0; 
+        }
+
+        /* 登入小框框的樣式 */
+        .login-container { 
+            background: var(--container-bg); 
+            padding: 40px; 
+            border-radius: 24px; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.05); 
+            width: 350px; 
+            text-align: center; 
+        }
+
+        h2 { color: var(--main-text); margin-bottom: 20px; }
+
+        /* 輸入框美化：寬度 100% 並加上圓角 */
+        input[type="text"], input[type="password"] { 
+            width: 100%; 
+            padding: 12px; 
+            margin: 10px 0; 
+            border: 1.5px solid #e0d5c1; 
+            border-radius: 12px; 
+            box-sizing: border-box; /* 防止 padding 撐破寬度 */
+            outline: none;
+        }
+
+        /* 登入按鈕美化 */
+        input[type="submit"] { 
+            width: 100%; 
+            padding: 12px; 
+            background: var(--accent-color); 
+            border: none; 
+            color: white; 
+            border-radius: 12px; 
+            cursor: pointer; 
+            font-weight: 600; 
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+
+        input[type="submit"]:hover { background: #b89388; } /* 滑鼠經過時變深一點點 */
+
+        /* 錯誤訊息樣式 */
+        .error-msg { 
+            color: #d32f2f; 
+            font-size: 0.85rem; 
+            margin-bottom: 15px; 
+            background: #ffebee; 
+            padding: 8px; 
+            border-radius: 8px;
+        }
     </style>
 </head>
 <body>
     <div class="login-container">
         <h2>登入系統</h2>
-        <?php if($error) echo "<p class='error-msg'>$error</p>"; ?>
+
+        <?php if($error) echo "<div class='error-msg'>$error</div>"; ?>
+
         <form method="post" action="">
             <input type="text" name="account" placeholder="帳號 (admin)" required>
+            
             <input type="password" name="password" placeholder="密碼 (1234)" required>
-            <input type="submit" value="登入">
+            
+            <input type="submit" value="立即登入">
         </form>
     </div>
 </body>
