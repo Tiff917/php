@@ -1,0 +1,26 @@
+<?php
+// 【步驟 1：啟動會話】
+// 不管是要讀取 Session 還是要銷毀它，第一步都必須先呼叫 session_start()
+session_start();
+
+// 【步驟 2：清除所有 Session 變數】
+// 這一行會把 $_SESSION 陣列裡面所有的資料（例如 loggedin, user_id 等）通通清空
+$_SESSION = array();
+
+// 【步驟 3：徹底銷毀會話】
+// 這會告訴伺服器：這個使用者的對話紀錄已經結束了，請把相關檔案從伺服器記憶體中刪除
+session_destroy();
+
+// 【額外加分：清除 Cookie】
+// 如果你在登入時有設定 Cookie (如記住我)，這裡可以順便把 Cookie 的期限設為「過去的時間」來刪除它
+if (isset($_COOKIE['remember_me'])) {
+    setcookie("remember_me", "", time() - 3600, "/");
+}
+
+// 【步驟 4：重新導向】
+// 登出成功後，使用者應該被送回登入頁面，而不是留在原地看空白畫面
+header("Location: login.php");
+
+// 轉址後強制停止後續程式執行
+exit;
+?>
