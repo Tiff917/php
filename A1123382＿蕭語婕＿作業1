@@ -1,19 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A1123382 PHP Summer Camp Registration</title>
+    <title>PHP 夏令營報名表單 - A1123382</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    
     <style>
+        /* 【關鍵：CSS 配色變數】利用 :root 定義全域顏色，方便統一修改 */
         :root {
-            --bg-color: #f3e9dc;       /* Light Milk Tea */
-            --container-bg: #ffffff;   /* Pure White */
-            --main-text: #5d4037;      /* Deep Cocoa */
-            --sub-text: #8d6e63;       /* Soft Brown */
-            --accent-color: #c6a49a;   /* Rose Milk Tea */
-            --border-color: #e0d5c1;   
-            --input-focus: #d7ccc8;
+            --bg-color: #f3e9dc;       /* 背景：淺奶茶色 */
+            --container-bg: #ffffff;   /* 容器：純白色 */
+            --main-text: #5d4037;      /* 主文字：深可可色 */
+            --sub-text: #8d6e63;       /* 副文字：柔和棕色 */
+            --accent-color: #c6a49a;   /* 強調色：玫瑰奶茶色 */
+            --border-color: #e0d5c1;   /* 邊框顏色 */
+            --input-focus: #d7ccc8;    /* 輸入框點擊後的發光色 */
         }
 
         body {
@@ -23,38 +25,25 @@
             line-height: 1.6;
             margin: 0;
             padding: 40px 20px;
-            display: flex;
+            display: flex; /* 使用 Flex 佈局讓內容置中 */
             flex-direction: column;
             align-items: center;
         }
 
+        /* 奶茶色卡片容器樣式 */
         .main-container {
             background-color: var(--container-bg);
             width: 100%;
             max-width: 550px;
             padding: 40px;
-            border-radius: 24px;
-            box-shadow: 0 15px 35px rgba(93, 64, 55, 0.08);
+            border-radius: 24px; /* 大圓角設計，看起來更溫潤 */
+            box-shadow: 0 15px 35px rgba(93, 64, 55, 0.08); /* 淡淡的陰影增加層次感 */
         }
 
-        h1 {
-            text-align: center;
-            font-weight: 600;
-            font-size: 1.8rem;
-            margin-bottom: 8px;
-            letter-spacing: 1px;
-        }
+        h1 { text-align: center; font-weight: 600; font-size: 1.8rem; margin-bottom: 8px; }
+        .subtitle { text-align: center; color: var(--sub-text); font-size: 0.9rem; margin-bottom: 35px; }
 
-        .subtitle {
-            text-align: center;
-            color: var(--sub-text);
-            font-size: 0.9rem;
-            margin-bottom: 35px;
-        }
-
-        .form-section {
-            margin-bottom: 22px;
-        }
+        .form-section { margin-bottom: 22px; }
 
         label.section-title {
             display: block;
@@ -62,16 +51,12 @@
             margin-bottom: 8px;
             font-size: 0.9rem;
             color: var(--main-text);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            text-transform: uppercase; /* 強制轉大寫，增加設計感 */
         }
 
-        input[type="text"],
-        input[type="email"],
-        input[type="password"],
-        input[type="date"],
-        select,
-        textarea {
+        /* 通用輸入框樣式（文字、郵件、密碼、日期、下拉選單、文字區域） */
+        input[type="text"], input[type="email"], input[type="password"],
+        input[type="date"], select, textarea {
             width: 100%;
             padding: 12px 16px;
             border: 1.5px solid var(--border-color);
@@ -80,21 +65,19 @@
             font-family: inherit;
             font-size: 0.95rem;
             color: var(--main-text);
-            box-sizing: border-box;
-            transition: all 0.3s ease;
+            box-sizing: border-box; /* 確保 padding 不會撐破寬度 */
+            transition: all 0.3s ease; /* 加入動畫平滑切換 */
         }
 
+        /* 輸入框被點擊時 (Focus) 的變色效果 */
         input:focus, select:focus, textarea:focus {
             outline: none;
             border-color: var(--accent-color);
             box-shadow: 0 0 0 4px rgba(198, 164, 154, 0.2);
         }
 
-        .option-group {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
+        /* 單選鈕與複選鈕的排列組 */
+        .option-group { display: flex; gap: 12px; flex-wrap: wrap; }
 
         .option-item {
             display: flex;
@@ -108,24 +91,13 @@
             transition: background 0.2s;
         }
 
-        .option-item:hover {
-            background: #f3e9dc;
-        }
+        .option-item:hover { background: #f3e9dc; } /* 滑鼠經過時變色 */
 
-        .option-item input {
-            margin-right: 8px;
-            accent-color: var(--accent-color);
-        }
+        /* 按鈕群組排版 */
+        .button-group { display: flex; gap: 15px; margin-top: 35px; }
 
-        .button-group {
-            display: flex;
-            gap: 15px;
-            margin-top: 35px;
-        }
-
-        input[type="submit"],
-        input[type="reset"] {
-            flex: 1;
+        input[type="submit"], input[type="reset"] {
+            flex: 1; /* 平分寬度 */
             padding: 14px;
             border: none;
             border-radius: 14px;
@@ -136,22 +108,14 @@
             transition: all 0.3s ease;
         }
 
-        input[type="submit"] {
-            background-color: var(--accent-color);
-            color: white;
-        }
+        /* 註冊按鈕顏色 */
+        input[type="submit"] { background-color: var(--accent-color); color: white; }
+        input[type="submit"]:hover { background-color: #b89388; transform: translateY(-2px); }
 
-        input[type="submit"]:hover {
-            background-color: #b89388;
-            transform: translateY(-2px);
-        }
+        /* 重設按鈕顏色 */
+        input[type="reset"] { background-color: #f0f0f0; color: #888; }
 
-        input[type="reset"] {
-            background-color: #f0f0f0;
-            color: #888;
-        }
-
-        /* Result Box Style */
+        /* PHP 結果顯示框樣式 */
         .result-box {
             background-color: #fff;
             border: 2px solid var(--bg-color);
@@ -163,13 +127,6 @@
             box-sizing: border-box;
         }
 
-        .result-box h2 {
-            font-size: 1.4rem;
-            color: var(--accent-color);
-            margin-top: 0;
-            text-align: center;
-        }
-
         .result-item {
             display: flex;
             justify-content: space-between;
@@ -177,17 +134,8 @@
             border-bottom: 1px solid #f8f1e9;
         }
 
-        .result-label {
-            font-weight: 600;
-            font-size: 0.85rem;
-            color: var(--sub-text);
-        }
-
-        .result-value {
-            font-size: 0.9rem;
-            color: var(--main-text);
-            text-align: right;
-        }
+        .result-label { font-weight: 600; font-size: 0.85rem; color: var(--sub-text); }
+        .result-value { font-size: 0.9rem; color: var(--main-text); text-align: right; }
     </style>
 </head>
 <body>
@@ -197,9 +145,10 @@
         <p class="subtitle">Join us for an unforgettable adventure!</p>
         
         <form action="" method="post">
+            
             <div class="form-section">
                 <label class="section-title">Full Name</label>
-                <input type="text" name="username" placeholder="Enter your name" required>
+                <input type="text" name="username" placeholder="輸入你的姓名" required>
             </div>
             
             <div class="form-section">
@@ -209,7 +158,7 @@
             
             <div class="form-section">
                 <label class="section-title">Password</label>
-                <input type="password" name="userpass" placeholder="At least 8 characters">
+                <input type="password" name="userpass" placeholder="至少 8 個字元">
             </div>
 
             <div class="form-section">
@@ -229,7 +178,7 @@
             <div class="form-section">
                 <label class="section-title">Select Session</label>
                 <select name="session">
-                    <option value="" disabled selected>Choose a session</option>
+                    <option value="" disabled selected>選擇場次</option>
                     <option value="Session A (July 1-5)">Session A (July 1-5)</option>
                     <option value="Session B (July 8-12)">Session B (July 8-12)</option>
                     <option value="Session C (July 15-19)">Session C (July 15-19)</option>
@@ -253,30 +202,41 @@
 
             <div class="form-section">
                 <label class="section-title">Special Requirements</label>
-                <textarea name="comment" rows="4" placeholder="Allergies, medical notes, etc."></textarea>
+                <textarea name="comment" rows="4" placeholder="過敏原、醫療需求等備註..."></textarea>
             </div>
 
             <div class="button-group">
-                <input type="reset" value="Reset">
-                <input type="submit" value="Register Now">
-            </div>
+                <input type="reset" value="Reset"> <input type="submit" value="Register Now"> </div>
         </form>
     </div>
 
     <?php
+    /* --- PHP 處理區塊 --- */
+    // 只有當使用者按了送出按鈕 (REQUEST_METHOD 為 POST) 才會執行
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "<div class='result-box'>";
         echo "<h2>Submission Confirmed</h2>";
 
+        // 【安全重點】使用 htmlspecialchars 避免 XSS 攻擊（把標籤轉成純文字）
         $name = htmlspecialchars($_POST['username']);
         $email = htmlspecialchars($_POST['email']);
+        
+        // 判斷日期是否有填寫，沒填就顯示「Not provided」
         $birthday = $_POST['birthday'] ? $_POST['birthday'] : "Not provided";
+        
+        // 使用 isset 檢查單選鈕是否被選中，避免沒選時報錯
         $gender = isset($_POST['gender']) ? $_POST['gender'] : "Not specified";
         $session = isset($_POST['session']) ? $_POST['session'] : "None";
+        
+        // 處理複選按鈕 (陣列)，利用 implode 將陣列轉為以逗號隔開的字串
         $interests = isset($_POST['interests']) ? implode(", ", $_POST['interests']) : "None";
+        
         $tcolor = $_POST['tshirt_color'];
+        
+        // nl2br 會把使用者在文字區域按下的 Enter 轉成網頁的 <br> 換行標籤
         $comment = nl2br(htmlspecialchars($_POST['comment']));
 
+        /* 定義一個 PHP 函式來重複生成顯示結果的表格列，減少重複代碼 */
         function showRow($label, $value) {
             echo "<div class='result-item'>
                     <span class='result-label'>$label</span>
@@ -284,12 +244,14 @@
                   </div>";
         }
 
+        // 呼叫函式將資料印在畫面上
         showRow("Name", $name);
         showRow("Email", $email);
         showRow("Birthday", $birthday);
         showRow("Gender", $gender);
         showRow("Session", $session);
         showRow("Interests", $interests);
+        // 顏色部分直接把色碼套進 CSS 的 color 屬性裡
         showRow("Shirt Color", "<span style='color:$tcolor; font-weight:bold;'>$tcolor</span>");
         showRow("Comments", $comment ? $comment : "None");
 
