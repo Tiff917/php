@@ -349,12 +349,13 @@ function seller_monthly_orders(int $sellerId, string $month): array
 function font_candidates(): array
 {
     return [
+        __DIR__ . '/assets/fonts/kaiu.ttf',
+        __DIR__ . '/assets/fonts/msjh.ttc',
         'C:/Windows/Fonts/NotoSansTC-VF.ttf',
         'C:/Windows/Fonts/NotoSansHK-VF.ttf',
         'C:/Windows/Fonts/kaiu.ttf',
         'C:/Windows/Fonts/STXIHEI.TTF',
         'C:/Windows/Fonts/STKAITI.TTF',
-        __DIR__ . '/assets/fonts/msjh.ttc',
         'C:/Windows/Fonts/arial.ttf',
     ];
 }

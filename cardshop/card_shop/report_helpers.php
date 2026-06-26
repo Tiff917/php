@@ -19,7 +19,19 @@ function report_text($image, int $size, int $x, int $y, string $text, array $rgb
     $color = imagecolorallocate($image, $rgb[0], $rgb[1], $rgb[2]);
     $safeText = report_safe_text($text);
     if ($font && function_exists('imagettftext')) {
-        imagettftext($image, $size, 0, $x, $y, $color, $font, $safeText);
+        $result = @imagettftext($image, $size, 0, $x, $y, $color, $font, $safeText);
+        if ($result !== false) {
+            return;
+        }
+    }
+
+    // Chinese report text must be rendered with a real TTF/TTC font.
+    if (preg_match('/[\p{Han}]/u', $safeText)) {
+        throw new RuntimeException('月報表找不到可用的中文字型，請確認 assets/fonts/kaiu.ttf 存在。');
+    }
+
+    if ($font) {
+        imagestring($image, 5, $x, $y - 16, $safeText, $color);
         return;
     }
 
