@@ -1,0 +1,169 @@
+:root {
+    --primary-color: #C2A38E;
+    --secondary-color: #EADBC8;
+    --bg-color: #FAF6F0;
+    --text-color: #5C4B40;
+    --accent-color: #DAB88B;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: 'Segoe UI', 'Microsoft JhengHei', sans-serif;
+    background: var(--bg-color);
+    color: var(--text-color);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ── 登入/註冊卡片 ── */
+.container {
+    background: #fff;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(194, 163, 142, 0.25);
+    width: 90%;
+    max-width: 460px;
+}
+
+h2 { color: var(--primary-color); margin-bottom: 25px; text-align: center; }
+
+input[type="text"], input[type="password"], input[type="email"],
+input[type="date"], input[type="number"], select, textarea {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1px solid var(--secondary-color);
+    border-radius: 8px;
+    font-size: 0.95rem;
+    margin-bottom: 15px;
+    outline: none;
+    transition: border-color 0.2s;
+    background: #fff;
+    color: var(--text-color);
+}
+input:focus, select:focus, textarea:focus { border-color: var(--primary-color); }
+
+button {
+    width: 100%;
+    padding: 13px;
+    background: var(--primary-color);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+    margin-top: 5px;
+}
+button:hover { background: var(--accent-color); }
+
+a { color: var(--primary-color); }
+
+/* ── 角色 Tab ── */
+.role-tabs {
+    display: flex;
+    border-top: 1px solid var(--secondary-color);
+    margin-top: 25px;
+}
+.tab-item {
+    flex: 1;
+    text-align: center;
+    padding: 12px;
+    cursor: pointer;
+    font-size: 0.88rem;
+    color: #A68A78;
+    transition: 0.2s;
+}
+.tab-item:hover, .tab-item.active {
+    background: var(--secondary-color);
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+/* ── 主頁 Layout ── */
+.main-layout {
+    display: flex;
+    max-width: 1100px;
+    margin: 30px auto;
+    padding: 0 20px;
+    gap: 25px;
+    width: 100%;
+}
+
+.sidebar {
+    width: 160px;
+    flex-shrink: 0;
+}
+
+.category-list {
+    list-style: none;
+    margin-top: 10px;
+}
+.category-list li {
+    padding: 9px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: 0.2s;
+    margin-bottom: 4px;
+}
+.category-list li:hover { background: var(--secondary-color); color: var(--primary-color); }
+
+/* ── 商品格子 ── */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 18px;
+    flex: 1;
+}
+
+.product-card {
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(194,163,142,.12);
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+}
+.product-card:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(194,163,142,.25); }
+
+.product-card img {
+    width: 100%;
+    aspect-ratio: 3/4;
+    object-fit: cover;
+    display: block;
+}
+
+.product-card .card-info { padding: 10px 12px; }
+.product-card .card-name { font-size: 0.85rem; color: var(--text-color); margin-bottom: 4px; }
+.product-card .card-price { font-weight: bold; color: var(--primary-color); font-size: 0.95rem; }
+.product-card .card-tags { font-size: 0.72rem; color: #A68A78; margin-top:3px; }
+
+.product-card button {
+    width: calc(100% - 24px);
+    margin: 0 12px 12px;
+    padding: 8px;
+    font-size: 0.85rem;
+    border-radius: 8px;
+}
+
+/* SOLD OUT */
+.sold-out-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-60%) rotate(-10deg);
+    background: rgba(0,0,0,0.65);
+    color: #fff;
+    font-weight: bold;
+    font-size: 1rem;
+    padding: 8px 16px;
+    border-radius: 4px;
+    pointer-events: none;
+    letter-spacing: 2px;
+}
+.sold-out-img { filter: grayscale(100%) opacity(75%); }
+.sold-out-btn { background: #ccc !important; cursor: not-allowed !important; }

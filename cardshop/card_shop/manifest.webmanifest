@@ -1,0 +1,22 @@
+{
+  "name": "T's cashop",
+  "short_name": "T's cashop",
+  "start_url": "/card_shop/signin.php",
+  "scope": "/card_shop/",
+  "display": "standalone",
+  "background_color": "#f5efe8",
+  "theme_color": "#f5efe8",
+  "description": "T's cashop",
+  "icons": [
+    {
+      "src": "/card_shop/assets/app-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/card_shop/assets/app-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

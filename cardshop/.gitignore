@@ -1,0 +1,12 @@
+# Runtime uploads
+card_shop/uploads/reports/
+card_shop/uploads/products/
+
+# Local environment
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE files
+.vscode/
+.idea/
